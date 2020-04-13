@@ -4,19 +4,19 @@ use std::convert::TryFrom;
 use std::fmt;
 
 #[derive(Debug)]
-pub struct Automata {
+pub struct NFA {
     alphabet: HashSet<String>,
     initial_state: String,
-    states: HashMap<String, State>,
+    states: HashMap<String, NFAState>,
 }
 
 #[derive(Debug)]
-pub struct State {
+struct NFAState {
     is_final: bool,
     transitions: MultiMap<String, String>,
 }
 
-impl Automata {
+impl NFA {
     fn transition(&self, from_state: &str, symbol: &str) -> Option<&Vec<String>> {
         self.states
             .get(from_state)
@@ -57,18 +57,18 @@ impl Automata {
     }
 }
 
-impl TryFrom<String> for Automata {
+impl TryFrom<String> for NFA {
     type Error = &'static str;
 
     fn try_from(file: String) -> Result<Self, Self::Error> {
         let mut lines = file.lines();
 
         // Parse states
-        let mut states: HashMap<String, State> = HashMap::new();
+        let mut states: HashMap<String, NFAState> = HashMap::new();
         for state_name in lines.next().unwrap().split(',') {
             states.insert(
                 state_name.to_string(),
-                State {
+                NFAState {
                     is_final: false,
                     transitions: MultiMap::new(),
                 },
@@ -148,7 +148,7 @@ impl TryFrom<String> for Automata {
             }
         }
 
-        Ok(Automata {
+        Ok(NFA {
             states,
             initial_state,
             alphabet,
@@ -156,7 +156,7 @@ impl TryFrom<String> for Automata {
     }
 }
 
-impl fmt::Display for Automata {
+impl fmt::Display for NFA {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "Automata {{\n")?;
         write!(f, "    Language: {:?},\n", self.alphabet)?;
