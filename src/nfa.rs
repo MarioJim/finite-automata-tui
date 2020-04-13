@@ -5,7 +5,7 @@ use std::fmt;
 
 #[derive(Debug)]
 pub struct NFA {
-    alphabet: HashSet<String>,
+    pub alphabet: HashSet<String>,
     initial_state: String,
     states: HashMap<String, NFAState>,
 }

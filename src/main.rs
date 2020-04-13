@@ -3,6 +3,7 @@ use std::env;
 use std::fs;
 use tuikit::prelude::*;
 
+mod dfa;
 mod input_field;
 mod nfa;
 
