@@ -17,10 +17,12 @@ struct DFAState {
 }
 
 impl DFA {
+    #[allow(dead_code)]
     fn transition(&self, from_state: &str, symbol: &str) -> Option<&String> {
         self.states.get(from_state).unwrap().transitions.get(symbol)
     }
 
+    #[allow(dead_code)]
     pub fn resolve_transitions(&self, symbols: Vec<&str>) -> Result<Option<String>, String> {
         let mut current_state: String = self.initial_state.clone();
         for symbol in symbols {
@@ -39,6 +41,7 @@ impl DFA {
         Ok(Some(current_state))
     }
 
+    #[allow(dead_code)]
     pub fn is_this_state_final(&self, state: &str) -> bool {
         self.states.get(state).unwrap().is_final
     }
@@ -46,6 +49,7 @@ impl DFA {
 
 impl From<nfa::NFA> for DFA {
     fn from(original_automata: nfa::NFA) -> Self {
+        #[allow(unused_variables)]
         let alphabet = original_automata.alphabet;
 
         unimplemented!()
